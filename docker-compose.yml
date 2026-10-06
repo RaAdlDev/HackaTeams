@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:hackateamspass@db:5432/hackateams_db
+      - JWT_SECRET=your_jwt_secret_key
+      - STRIPE_SECRET_KEY=your_stripe_secret
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=hackateamspass
+      - POSTGRES_DB=hackateams_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
